@@ -40,7 +40,7 @@ export class StripeBilling {
         url: session.url || '',
       };
     } catch (error) {
-      console.error('Stripe checkout error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('Stripe checkout error:', error);
       throw new Error(`Failed to create checkout session: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -65,7 +65,7 @@ export class StripeBilling {
 
       return { url: session.url };
     } catch (error) {
-      console.error('Stripe portal error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('Stripe portal error:', error);
       throw new Error(`Failed to create portal session: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -101,7 +101,7 @@ export class StripeBilling {
 
       return 'inactive';
     } catch (error) {
-      console.error('Stripe subscription status error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('Stripe subscription status error:', error);
       return 'inactive';
     }
   }
@@ -129,7 +129,7 @@ export class StripeBilling {
           console.log(`Unhandled event type: ${event.type}`);
       }
     } catch (error) {
-      console.error('Stripe webhook error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('Stripe webhook error:', error);
       throw new Error(`Webhook verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }

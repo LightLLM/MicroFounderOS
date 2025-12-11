@@ -27,7 +27,7 @@ export class SmartBuckets {
       }
       this.localStorage.get(bucket)!.set(key, { data, metadata, timestamp: Date.now() });
     } catch (error) {
-      console.error('SmartBuckets upload error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartBuckets upload error:', error);
       // Fallback to local storage
       if (!this.localStorage.has(bucket)) {
         this.localStorage.set(bucket, new Map());
@@ -44,7 +44,7 @@ export class SmartBuckets {
       });
       return result;
     } catch (error) {
-      console.error('SmartBuckets download error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartBuckets download error:', error);
       // Fallback to local storage
       const bucketData = this.localStorage.get(bucket);
       if (bucketData) {
@@ -63,7 +63,7 @@ export class SmartBuckets {
       });
       return result || [];
     } catch (error) {
-      console.error('SmartBuckets list error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartBuckets list error:', error);
       // Fallback to local storage
       const bucketData = this.localStorage.get(bucket);
       if (!bucketData) return [];
@@ -91,7 +91,7 @@ export class SmartBuckets {
         bucketData.delete(key);
       }
     } catch (error) {
-      console.error('SmartBuckets delete error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartBuckets delete error:', error);
       // Fallback to local storage
       const bucketData = this.localStorage.get(bucket);
       if (bucketData) {
@@ -108,7 +108,7 @@ export class SmartBuckets {
       });
       return result;
     } catch (error) {
-      console.error('SmartBuckets getMetadata error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartBuckets getMetadata error:', error);
       // Fallback to local storage
       const bucketData = this.localStorage.get(bucket);
       if (bucketData) {

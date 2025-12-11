@@ -1,15 +1,36 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+// Resolve API base URL for browser and server environments.
+// Priority: NEXT_PUBLIC_API_URL env var -> browser-derived host with port 3001 -> localhost:3001 for server/tests
+// Ensure `API_URL` is always a string to avoid nullability errors in templates/tests.
+let API_URL: string = process.env.NEXT_PUBLIC_API_URL || '';
+
+if (!API_URL) {
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+    API_URL = isLocalhost ? 'http://localhost:3001' : `${window.location.protocol}//${hostname}:3001`;
+  } else {
+    API_URL = 'http://localhost:3001';
+  }
+}
+
+// Normalize to avoid double-slashes when concatenating
+API_URL = API_URL.replace(/\/+$/, '');
 
 export async function apiRequest(endpoint: string, options: RequestInit = {}) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  
+
+  // Ensure endpoint starts with '/'
+  const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  // Safely merge headers; `options.headers` may be undefined or a Headers instance
+  const extraHeaders = (options.headers && typeof options.headers === 'object') ? options.headers as Record<string, string> : {};
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...options.headers,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...extraHeaders,
   };
 
-  const response = await fetch(`${API_URL}/api${endpoint}`, {
+  const response = await fetch(`${API_URL}/api${path}`, {
     // Ensure a default method so tests that assert method 'GET' see it
     method: (options && (options as RequestInit).method) || 'GET',
     ...options,

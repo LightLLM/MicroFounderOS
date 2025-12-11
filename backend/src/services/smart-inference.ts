@@ -31,7 +31,7 @@ export class SmartInference {
 
       return response.text || response.content || '';
     } catch (error) {
-      console.error('SmartInference error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartInference error:', error);
       throw new Error(`Inference failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
@@ -46,7 +46,7 @@ export class SmartInference {
 
       return response.text || response.content || '';
     } catch (error) {
-      console.error('SmartInference chat error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartInference chat error:', error);
       throw new Error(`Chat inference failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }

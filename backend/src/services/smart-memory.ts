@@ -29,7 +29,7 @@ export class SmartMemory {
       // Fallback to local store
       return this.memoryStore.get(memoryKey) || null;
     } catch (error) {
-      console.error('SmartMemory read error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartMemory read error:', error);
       // Fallback to local store
       return this.memoryStore.get(`${userId}:${key}`) || null;
     }
@@ -48,7 +48,7 @@ export class SmartMemory {
       // Also store locally as backup
       this.memoryStore.set(memoryKey, value);
     } catch (error) {
-      console.error('SmartMemory write error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartMemory write error:', error);
       // Fallback to local store
       this.memoryStore.set(`${userId}:${key}`, value);
     }
@@ -60,7 +60,7 @@ export class SmartMemory {
       const updated = Array.isArray(existing) ? [...existing, value] : [existing, value];
       await this.write(key, userId, updated);
     } catch (error) {
-      console.error('SmartMemory append error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartMemory append error:', error);
       const memoryKey = `${userId}:${key}`;
       const existing = this.memoryStore.get(memoryKey);
       const updated = Array.isArray(existing) ? [...existing, value] : [existing, value];
@@ -77,7 +77,7 @@ export class SmartMemory {
       });
       this.memoryStore.delete(memoryKey);
     } catch (error) {
-      console.error('SmartMemory delete error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartMemory delete error:', error);
       this.memoryStore.delete(`${userId}:${key}`);
     }
   }
@@ -90,7 +90,7 @@ export class SmartMemory {
       });
       return result || [];
     } catch (error) {
-      console.error('SmartMemory list error:', error);
+      if (process.env.NODE_ENV !== 'test') console.error('SmartMemory list error:', error);
       // Fallback to local store
       const keys: string[] = [];
       const searchPrefix = prefix ? `${userId}:${prefix}` : `${userId}:`;

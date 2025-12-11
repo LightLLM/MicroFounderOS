@@ -20,7 +20,7 @@ export class SmartSQL {
       });
       return result || [];
     } catch (error) {
-      console.error('SmartSQL query error:', error);
+        if (process.env.NODE_ENV !== 'test') console.error('SmartSQL query error:', error);
       // For demo purposes, return empty array
       return [];
     }
@@ -34,7 +34,7 @@ export class SmartSQL {
       });
       return result || { rowsAffected: 0 };
     } catch (error) {
-      console.error('SmartSQL execute error:', error);
+        if (process.env.NODE_ENV !== 'test') console.error('SmartSQL execute error:', error);
       return { rowsAffected: 0 };
     }
   }
@@ -48,7 +48,7 @@ export class SmartSQL {
       const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (${columns})`;
       await this.execute(sql);
     } catch (error) {
-      console.error('SmartSQL createTable error:', error);
+        if (process.env.NODE_ENV !== 'test') console.error('SmartSQL createTable error:', error);
     }
   }
 
@@ -61,7 +61,7 @@ export class SmartSQL {
       const result = await this.query(sql);
       return { id: result[0]?.id || crypto.randomUUID() };
     } catch (error) {
-      console.error('SmartSQL insert error:', error);
+        if (process.env.NODE_ENV !== 'test') console.error('SmartSQL insert error:', error);
       // Fallback to local storage
       const id = crypto.randomUUID();
       if (!this.localDb.has(tableName)) {
@@ -84,7 +84,7 @@ export class SmartSQL {
       const result = await this.query(sql, undefined);
       return result || [];
     } catch (error) {
-      console.error('SmartSQL select error:', error);
+        if (process.env.NODE_ENV !== 'test') console.error('SmartSQL select error:', error);
       // Fallback to local storage
       const table = this.localDb.get(tableName) || [];
       if (!where) return table;
@@ -107,7 +107,7 @@ export class SmartSQL {
       const sql = `UPDATE ${tableName} SET ${sets} WHERE ${conditions}`;
       return await this.execute(sql, undefined);
     } catch (error) {
-      console.error('SmartSQL update error:', error);
+        if (process.env.NODE_ENV !== 'test') console.error('SmartSQL update error:', error);
       // Fallback to local storage
       const table = this.localDb.get(tableName) || [];
       let affected = 0;
@@ -132,7 +132,7 @@ export class SmartSQL {
       const sql = `DELETE FROM ${tableName} WHERE ${conditions}`;
       return await this.execute(sql, undefined);
     } catch (error) {
-      console.error('SmartSQL delete error:', error);
+        if (process.env.NODE_ENV !== 'test') console.error('SmartSQL delete error:', error);
       // Fallback to local storage
       const table = this.localDb.get(tableName) || [];
       let affected = 0;
