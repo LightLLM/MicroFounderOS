@@ -5,7 +5,7 @@ jest.mock('@workos-inc/node');
 
 describe('WorkOSAuth', () => {
   let workOSAuth: WorkOSAuth;
-  let mockWorkOS: jest.Mocked<WorkOS>;
+  let mockWorkOS: any;
 
   beforeEach(() => {
     process.env.WORKOS_CLIENT_ID = 'test-client-id';
@@ -21,7 +21,7 @@ describe('WorkOSAuth', () => {
       },
     } as any;
 
-    (WorkOS as jest.Mock).mockImplementation(() => mockWorkOS);
+    (WorkOS as unknown as jest.Mock).mockImplementation(() => mockWorkOS);
     workOSAuth = new WorkOSAuth();
   });
 

@@ -7,7 +7,7 @@ export class StripeBilling {
   constructor() {
     const secretKey = process.env.STRIPE_SECRET_KEY || '';
     this.stripe = new Stripe(secretKey, {
-      apiVersion: '2024-11-20.acacia',
+      apiVersion: '2023-10-16',
     });
     this.priceId = process.env.STRIPE_PRICE_ID || '';
   }

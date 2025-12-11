@@ -81,8 +81,7 @@ export class SmartSQL {
           .join(' AND ');
         sql += ` WHERE ${conditions}`;
       }
-      
-      const result = await this.query(sql);
+      const result = await this.query(sql, undefined);
       return result || [];
     } catch (error) {
       console.error('SmartSQL select error:', error);
@@ -106,7 +105,7 @@ export class SmartSQL {
         .join(' AND ');
       
       const sql = `UPDATE ${tableName} SET ${sets} WHERE ${conditions}`;
-      return await this.execute(sql);
+      return await this.execute(sql, undefined);
     } catch (error) {
       console.error('SmartSQL update error:', error);
       // Fallback to local storage
@@ -131,7 +130,7 @@ export class SmartSQL {
         .join(' AND ');
       
       const sql = `DELETE FROM ${tableName} WHERE ${conditions}`;
-      return await this.execute(sql);
+      return await this.execute(sql, undefined);
     } catch (error) {
       console.error('SmartSQL delete error:', error);
       // Fallback to local storage

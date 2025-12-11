@@ -5,7 +5,7 @@ jest.mock('stripe');
 
 describe('StripeBilling', () => {
   let stripeBilling: StripeBilling;
-  let mockStripe: jest.Mocked<Stripe>;
+  let mockStripe: any;
 
   beforeEach(() => {
     process.env.STRIPE_SECRET_KEY = 'sk_test_key';
@@ -33,7 +33,7 @@ describe('StripeBilling', () => {
       },
     } as any;
 
-    (Stripe as jest.Mock).mockImplementation(() => mockStripe);
+    (Stripe as unknown as jest.Mock).mockImplementation(() => mockStripe);
     stripeBilling = new StripeBilling();
   });
 

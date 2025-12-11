@@ -10,6 +10,8 @@ export async function apiRequest(endpoint: string, options: RequestInit = {}) {
   };
 
   const response = await fetch(`${API_URL}/api${endpoint}`, {
+    // Ensure a default method so tests that assert method 'GET' see it
+    method: (options && (options as RequestInit).method) || 'GET',
     ...options,
     headers,
   });

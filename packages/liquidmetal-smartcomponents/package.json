@@ -1,0 +1,8 @@
+{
+  "name": "@raindrop-studios/liquidmetal-smartcomponents",
+  "version": "1.0.0",
+  "description": "Local stub of LiquidMetal smart components for development",
+  "main": "index.js",
+  "author": "MicroFounderOS",
+  "license": "MIT"
+}

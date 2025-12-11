@@ -15,7 +15,7 @@ export class WorkOSAuth {
   }
 
   async getAuthorizationUrl(state?: string): Promise<string> {
-    const url = this.client.userManagement.getAuthorizationUrl({
+    const url = (this.client.userManagement as any).getAuthorizationUrl({
       clientId: this.clientId,
       redirectUri: this.redirectUri,
       provider: 'email',
@@ -27,7 +27,7 @@ export class WorkOSAuth {
 
   async exchangeCodeForToken(code: string): Promise<{ accessToken: string; user: any }> {
     try {
-      const { accessToken, user } = await this.client.userManagement.authenticateWithEmail({
+      const { accessToken, user } = await (this.client.userManagement as any).authenticateWithEmail({
         clientId: this.clientId,
         clientSecret: this.clientSecret,
         code,
@@ -43,7 +43,7 @@ export class WorkOSAuth {
 
   async sendMagicLink(email: string, state?: string): Promise<void> {
     try {
-      await this.client.userManagement.sendMagicLink({
+      await (this.client.userManagement as any).sendMagicLink({
         email,
         clientId: this.clientId,
         redirectUri: this.redirectUri,
@@ -57,7 +57,7 @@ export class WorkOSAuth {
 
   async getUser(accessToken: string): Promise<any> {
     try {
-      const user = await this.client.userManagement.getUser(accessToken);
+      const user = await (this.client.userManagement as any).getUser(accessToken);
       return user;
     } catch (error) {
       console.error('WorkOS getUser error:', error);

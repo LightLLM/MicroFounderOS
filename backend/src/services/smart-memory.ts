@@ -56,7 +56,7 @@ export class SmartMemory {
 
   async append(key: string, userId: string, value: any): Promise<void> {
     try {
-      const existing = await this.read(key, userId);
+      const existing = (await this.read(key, userId)) || [];
       const updated = Array.isArray(existing) ? [...existing, value] : [existing, value];
       await this.write(key, userId, updated);
     } catch (error) {

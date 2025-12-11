@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "backend",
-    "frontend"
+    "frontend",
+    "packages/liquidmetal-smartcomponents"
   ],
   "scripts": {
     "dev:backend": "cd backend && npm run dev",

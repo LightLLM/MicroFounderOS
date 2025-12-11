@@ -39,7 +39,9 @@ export default function OnboardingPage() {
   const handleVerifyEmail = () => {
     // In production, this would verify the magic link token
     // For demo, we'll generate a userId
-    const demoUserId = crypto.randomUUID();
+    const demoUserId = (typeof crypto !== 'undefined' && typeof (crypto as any).randomUUID === 'function')
+      ? (crypto as any).randomUUID()
+      : `demo-${Math.random().toString(36).slice(2)}`;
     setUserId(demoUserId);
     localStorage.setItem('userId', demoUserId);
     localStorage.setItem('accessToken', 'demo-token');
@@ -91,6 +93,9 @@ export default function OnboardingPage() {
                 </div>
                 <Button onClick={handleSendMagicLink} className="w-full">
                   Send Magic Link
+                </Button>
+                <Button onClick={handleVerifyEmail} className="w-full">
+                  Continue (Demo Mode)
                 </Button>
               </>
             ) : (
